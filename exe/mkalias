@@ -2,7 +2,40 @@
 
 require "mkalias"
 
-alias_name = ARGV[0]
-command = ARGV[1]
+VALID_OPTIONS = ['new']
 
-Mkalias.new_alias(alias_name, command)
+def usage
+  puts "Usage: mkalias [option]"
+  puts "option: new -> mkalias new [alias] [command]"
+  abort
+end
+
+def new_alias
+  if ARGV.count < 3
+    puts 'NEW_ALIAS'
+    usage
+  end
+
+  alias_name = ARGV[1]
+  command = ARGV[2]
+  Mkalias.new_alias(alias_name, command)
+end
+
+def main
+  if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
+    puts 'MAIN'
+    puts VALID_OPTIONS.include?(ARGV[0])
+    usage
+  end
+
+  option = ARGV[0]
+
+  if option == 'new'
+    new_alias
+  end
+end
+
+
+if caller.length == 0
+  main
+end

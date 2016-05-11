@@ -11,9 +11,9 @@ module Mkalias
 
     bash_path = "#{File.expand_path('~')}/.bashrc"
     open(bash_path, 'a') do |file|
-        file.puts("\n")
-        file.puts(bash_alias)
-        file.puts(bash_function)
+      file.puts("\n")
+      file.puts(bash_alias)
+      file.puts(bash_function)
     end
   end
 
