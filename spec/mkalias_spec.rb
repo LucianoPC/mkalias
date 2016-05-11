@@ -47,6 +47,15 @@ describe Mkalias do
       expect(lines).to include("function mkalias_ls(){ echo $1 $2; }\n")
     end
 
+    it 'dont create new alias with an existing name' do
+      alias_name = 'cd'
+      command = 'echo #1 #2'
+
+      result = Mkalias.new_alias(alias_name, command, FILE_PATH)
+
+      expect(result).to be false
+    end
+
     it 'list all alias' do
       alias_names = Mkalias.list_alias(FILE_PATH)
 

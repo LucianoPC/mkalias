@@ -24,7 +24,14 @@ def new_alias
 
   alias_name = ARGV[1]
   command = ARGV[2]
-  Mkalias.new_alias(alias_name, command)
+  result = Mkalias.new_alias(alias_name, command)
+
+  if result
+    puts " - Created Alias: #{alias_name}"
+    puts " - Run '$ bash --login' to use your alias"
+  else
+    puts " ERROR: O Alias [#{alias_name}] já existe"
+  end
 end
 
 def list_alias

@@ -6,6 +6,9 @@ module Mkalias
   BASHRC_PATH = "#{File.expand_path('~')}/.bashrc"
 
   def self.new_alias(alias_name, command, file_path=BASHRC_PATH)
+    alias_names = Mkalias.list_alias(file_path)
+    return false if alias_names.include?(alias_name)
+
     command = command.gsub('#', '$')
 
     function_name = "mkalias_#{alias_name}"
@@ -17,6 +20,8 @@ module Mkalias
       file.puts(bash_alias)
       file.puts(bash_function)
     end
+
+    true
   end
 
   def self.list_alias(file_path=BASHRC_PATH)
