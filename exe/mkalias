@@ -2,13 +2,14 @@
 
 require 'mkalias'
 
-VALID_OPTIONS = ['new', 'list', 'show']
+VALID_OPTIONS = ['new', 'list', 'show', 'remove']
 
 def usage
   puts "Usage: mkalias [option]"
   puts "option: new \t -> mkalias new [alias] [command]"
   puts "option: list \t -> mkalias list"
   puts "option: show \t -> mkalias show [alias]"
+  puts "option: remove \t -> mkalias remove [alias]"
   abort
 end
 
@@ -46,6 +47,20 @@ def show_alias
   end
 end
 
+def remove_alias
+  if ARGV.count < 2
+    usage
+  end
+  alias_name = ARGV[1]
+  removed = Mkalias.remove_alias(alias_name)
+
+  if removed
+    puts "Removed Alias: #{alias_name}"
+  else
+    puts "Alias [#{alias_name}] not founded"
+  end
+end
+
 def main
   if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
     usage
@@ -59,6 +74,10 @@ def main
     list_alias
   elsif option == 'show'
     show_alias
+  elsif option == 'remove'
+    remove_alias
+  else
+    usage
   end
 end
 

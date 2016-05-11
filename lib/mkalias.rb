@@ -49,4 +49,18 @@ module Mkalias
 
     nil
   end
+
+  def self.remove_alias(alias_name)
+    alias_names = Mkalias.list_alias
+    return false unless alias_names.include?(alias_name)
+
+    alias_regex = /\bmkalias_#{alias_name}[(']/
+
+    bash_path = "#{File.expand_path('~')}/.bashrc"
+    lines = File.readlines(bash_path).reject{ |line| line =~ alias_regex }
+
+    File.open(bash_path, "w"){ |f| lines.each { |line| f.puts line } }
+
+    return true
+  end
 end
