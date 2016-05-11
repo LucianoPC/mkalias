@@ -34,7 +34,7 @@ module Mkalias
   end
 
   def self.show_alias(alias_name, file_path=BASHRC_PATH)
-    alias_names = Mkalias.list_alias
+    alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
     alias_regex = /\bmkalias_#{alias_name}[(]/
@@ -51,7 +51,7 @@ module Mkalias
   end
 
   def self.remove_alias(alias_name, file_path=BASHRC_PATH)
-    alias_names = Mkalias.list_alias
+    alias_names = Mkalias.list_alias(file_path)
     return false unless alias_names.include?(alias_name)
 
     alias_regex = /\bmkalias_#{alias_name}[(']/
