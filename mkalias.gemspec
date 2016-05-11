@@ -12,14 +12,15 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{An make alias}
   spec.description   = %q{Make alias on yours command line}
   spec.homepage      = 'https://github.com/LucianoPC/mkalias'
+  spec.license       = 'GPL-3.0'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = 'https://github.com/LucianoPC/mkalias'
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
-  end
+  # if spec.respond_to?(:metadata)
+  #   spec.metadata['allowed_push_host'] = 'https://github.com/LucianoPC/mkalias'
+  # else
+  #   raise 'RubyGems 2.0 or newer is required to protect against public gem pushes.'
+  # end
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = 'exe'

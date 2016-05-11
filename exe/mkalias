@@ -10,6 +10,10 @@ def usage
   puts "option: list \t -> mkalias list"
   puts "option: show \t -> mkalias show [alias]"
   puts "option: remove \t -> mkalias remove [alias]"
+  puts "\n"
+  puts "Attention: To make alias with args use #. Example:"
+  puts " $ mkalias new [alias] \"echo #1 #2 #3\""
+  puts " - Then you can use: $ [alias] arg1 arg2 arg3"
   abort
 end
 
