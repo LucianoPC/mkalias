@@ -12,7 +12,6 @@ module Mkalias
     bash_function = "function #{function_name}(){ #{command}; }"
     bash_alias = "alias #{alias_name}='#{function_name}'"
 
-    file_path = "#{File.expand_path('~')}/.bashrc"
     open(file_path, 'a') do |file|
       file.puts("\n")
       file.puts(bash_alias)
@@ -25,7 +24,6 @@ module Mkalias
 
     alias_regex = /\bmkalias_(.*)[(]/
 
-    file_path = "#{File.expand_path('~')}/.bashrc"
     alias_functions = File.foreach(file_path).grep(alias_regex)
     alias_functions.each do |function|
       result = function.match(alias_regex)
@@ -42,8 +40,8 @@ module Mkalias
     alias_regex = /\bmkalias_#{alias_name}[(]/
     function_regex = /[{](.*)[;]/
 
-    file_path = "#{File.expand_path('~')}/.bashrc"
     alias_functions = File.foreach(file_path).grep(alias_regex)
+
     alias_functions.each do |function|
       result = function.match(function_regex)
       return result.captures.first.strip if result
@@ -58,7 +56,6 @@ module Mkalias
 
     alias_regex = /\bmkalias_#{alias_name}[(']/
 
-    file_path = "#{File.expand_path('~')}/.bashrc"
     lines = File.readlines(file_path).reject{ |line| line =~ alias_regex }
 
     File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
