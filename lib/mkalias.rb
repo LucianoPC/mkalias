@@ -5,9 +5,14 @@ module Mkalias
   def self.new_alias(alias_name, command)
     bash_path = "#{File.expand_path('~')}/.bashrc"
 
-    bash_line = "alias #{alias_name}='#{command}'"
+    function_name = "mkalias_#{alias_name}"
+    bash_function = "function #{function_name}(){ #{command}; }"
+    bash_alias = "alias #{alias_name}='#{function_name}'"
+
     open(bash_path, 'a') do |file|
-        file.puts(bash_line)
+        file.puts("\n")
+        file.puts(bash_alias)
+        file.puts(bash_function)
     end
   end
 end
