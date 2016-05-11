@@ -37,4 +37,5 @@ build/
 
 ## Temp files
 *.swp
+*.swo
 *~

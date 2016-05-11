@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require "mkalias"
+
+alias_name = ARGV[0]
+command = ARGV[1]
+
+Mkalias.new_alias(alias_name, command)
