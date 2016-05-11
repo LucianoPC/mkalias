@@ -47,6 +47,17 @@ describe Mkalias do
       expect(lines).to include("function mkalias_ls(){ echo $1 $2; }\n")
     end
 
+    it 'create new alias with multiple commands' do
+      alias_name = 'ls'
+      commands = ['pwd', 'echo a', 'cd']
+
+      Mkalias.new_alias(alias_name, commands, FILE_PATH)
+      lines = File.readlines(FILE_PATH)
+
+      expect(lines).to include("alias ls='mkalias_ls'\n")
+      expect(lines).to include("function mkalias_ls(){ pwd; echo a; cd; }\n")
+    end
+
     it 'dont create new alias with an existing name' do
       alias_name = 'cd'
       command = 'echo #1 #2'

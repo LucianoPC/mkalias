@@ -5,14 +5,15 @@ module Mkalias
 
   BASHRC_PATH = "#{File.expand_path('~')}/.bashrc"
 
-  def self.new_alias(alias_name, command, file_path=BASHRC_PATH)
+  def self.new_alias(alias_name, commands, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return false if alias_names.include?(alias_name)
 
-    command = command.gsub('#', '$')
+    commands = commands.join('; ') if commands.kind_of?(Array)
+    commands = commands.gsub('#', '$')
 
     function_name = "mkalias_#{alias_name}"
-    bash_function = "function #{function_name}(){ #{command}; }"
+    bash_function = "function #{function_name}(){ #{commands}; }"
     bash_alias = "alias #{alias_name}='#{function_name}'"
 
     open(file_path, 'a') do |file|

@@ -24,8 +24,8 @@ def new_alias
   end
 
   alias_name = ARGV[1]
-  command = ARGV[2]
-  result = Mkalias.new_alias(alias_name, command)
+  commands = ARGV[2..-1]
+  result = Mkalias.new_alias(alias_name, commands)
 
   if result
     puts " - Created Alias: #{alias_name}"
