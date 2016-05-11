@@ -3,28 +3,30 @@ require 'set'
 
 module Mkalias
 
-  def self.new_alias(alias_name, command)
+  BASHRC_PATH = "#{File.expand_path('~')}/.bashrc"
+
+  def self.new_alias(alias_name, command, file_path=BASHRC_PATH)
     command = command.gsub('#', '$')
 
     function_name = "mkalias_#{alias_name}"
     bash_function = "function #{function_name}(){ #{command}; }"
     bash_alias = "alias #{alias_name}='#{function_name}'"
 
-    bash_path = "#{File.expand_path('~')}/.bashrc"
-    open(bash_path, 'a') do |file|
+    file_path = "#{File.expand_path('~')}/.bashrc"
+    open(file_path, 'a') do |file|
       file.puts("\n")
       file.puts(bash_alias)
       file.puts(bash_function)
     end
   end
 
-  def self.list_alias
+  def self.list_alias(file_path=BASHRC_PATH)
     alias_names = Set.new
 
     alias_regex = /\bmkalias_(.*)[(]/
 
-    bash_path = "#{File.expand_path('~')}/.bashrc"
-    alias_functions = File.foreach(bash_path).grep(alias_regex)
+    file_path = "#{File.expand_path('~')}/.bashrc"
+    alias_functions = File.foreach(file_path).grep(alias_regex)
     alias_functions.each do |function|
       result = function.match(alias_regex)
       alias_names << result.captures.first if result
@@ -33,15 +35,15 @@ module Mkalias
     alias_names.to_a
   end
 
-  def self.show_alias(alias_name)
+  def self.show_alias(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias
     return nil unless alias_names.include?(alias_name)
 
     alias_regex = /\bmkalias_#{alias_name}[(]/
     function_regex = /[{](.*)[;]/
 
-    bash_path = "#{File.expand_path('~')}/.bashrc"
-    alias_functions = File.foreach(bash_path).grep(alias_regex)
+    file_path = "#{File.expand_path('~')}/.bashrc"
+    alias_functions = File.foreach(file_path).grep(alias_regex)
     alias_functions.each do |function|
       result = function.match(function_regex)
       return result.captures.first.strip if result
@@ -50,16 +52,16 @@ module Mkalias
     nil
   end
 
-  def self.remove_alias(alias_name)
+  def self.remove_alias(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias
     return false unless alias_names.include?(alias_name)
 
     alias_regex = /\bmkalias_#{alias_name}[(']/
 
-    bash_path = "#{File.expand_path('~')}/.bashrc"
-    lines = File.readlines(bash_path).reject{ |line| line =~ alias_regex }
+    file_path = "#{File.expand_path('~')}/.bashrc"
+    lines = File.readlines(file_path).reject{ |line| line =~ alias_regex }
 
-    File.open(bash_path, "w"){ |f| lines.each { |line| f.puts line } }
+    File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
 
     return true
   end
