@@ -1,4 +1,5 @@
-require "mkalias/version"
+require 'mkalias/version'
+require 'set'
 
 module Mkalias
 
@@ -17,4 +18,18 @@ module Mkalias
     end
   end
 
+  def self.list_alias
+    alias_names = Set.new
+
+    alias_regex = /\bmkalias_(.*)[(]/
+
+    bash_path = "#{File.expand_path('~')}/.bashrc"
+    alias_functions = File.foreach(bash_path).grep(alias_regex)
+    alias_functions.each do |function|
+      result = function.match(alias_regex)
+      alias_names << result.captures.first if result
+    end
+
+    alias_names.to_a
+  end
 end

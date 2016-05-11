@@ -1,18 +1,18 @@
 #!/usr/bin/env ruby
 
-require "mkalias"
+require 'mkalias'
 
-VALID_OPTIONS = ['new']
+VALID_OPTIONS = ['new', 'list']
 
 def usage
   puts "Usage: mkalias [option]"
-  puts "option: new -> mkalias new [alias] [command]"
+  puts "option: new \t -> mkalias new [alias] [command]"
+  puts "option: list \t -> mkalias list"
   abort
 end
 
 def new_alias
   if ARGV.count < 3
-    puts 'NEW_ALIAS'
     usage
   end
 
@@ -21,10 +21,17 @@ def new_alias
   Mkalias.new_alias(alias_name, command)
 end
 
+def list_alias
+  alias_names = Mkalias.list_alias
+
+  puts "Registered Alias:"
+  alias_names.each do |alias_name|
+    puts " - #{alias_name}"
+  end
+end
+
 def main
   if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
-    puts 'MAIN'
-    puts VALID_OPTIONS.include?(ARGV[0])
     usage
   end
 
@@ -32,6 +39,8 @@ def main
 
   if option == 'new'
     new_alias
+  elsif option == 'list'
+    list_alias
   end
 end
 
