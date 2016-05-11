@@ -32,4 +32,21 @@ module Mkalias
 
     alias_names.to_a
   end
+
+  def self.show_alias(alias_name)
+    alias_names = Mkalias.list_alias
+    return nil unless alias_names.include?(alias_name)
+
+    alias_regex = /\bmkalias_#{alias_name}[(]/
+    function_regex = /[{](.*)[;]/
+
+    bash_path = "#{File.expand_path('~')}/.bashrc"
+    alias_functions = File.foreach(bash_path).grep(alias_regex)
+    alias_functions.each do |function|
+      result = function.match(function_regex)
+      return result.captures.first.strip if result
+    end
+
+    nil
+  end
 end

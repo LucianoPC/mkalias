@@ -2,12 +2,13 @@
 
 require 'mkalias'
 
-VALID_OPTIONS = ['new', 'list']
+VALID_OPTIONS = ['new', 'list', 'show']
 
 def usage
   puts "Usage: mkalias [option]"
   puts "option: new \t -> mkalias new [alias] [command]"
   puts "option: list \t -> mkalias list"
+  puts "option: show \t -> mkalias show [alias]"
   abort
 end
 
@@ -30,6 +31,21 @@ def list_alias
   end
 end
 
+def show_alias
+  if ARGV.count < 2
+    usage
+  end
+  alias_name = ARGV[1]
+  alias_function = Mkalias.show_alias(alias_name)
+
+  if alias_function
+    puts "#{alias_name}:"
+    puts " #{alias_function}"
+  else
+    puts "Alias [#{alias_name}] not founded"
+  end
+end
+
 def main
   if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
     usage
@@ -41,6 +57,8 @@ def main
     new_alias
   elsif option == 'list'
     list_alias
+  elsif option == 'show'
+    show_alias
   end
 end
 
