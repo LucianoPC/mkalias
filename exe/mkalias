@@ -81,7 +81,4 @@ def main
   end
 end
 
-
-if caller.length == 0
-  main
-end
+main
