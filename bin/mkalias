@@ -76,13 +76,22 @@ def remove_alias
   if ARGV.count < 2
     usage
   end
-  alias_name = ARGV[1]
-  removed = Mkalias.remove_alias(alias_name)
+  alias_names = ARGV[1..-1]
+  removed_alias = Mkalias.remove_alias(alias_names)
 
-  if removed
-    puts "Removed Alias: #{alias_name}"
-  else
-    puts "Alias [#{alias_name}] not founded"
+  alias_not_founded = alias_names - removed_alias
+  unless alias_not_founded.empty?
+    alias_not_founded = alias_not_founded.join(', ')
+    puts "Alias not founded: #{alias_not_founded}"
+    puts ""
+  end
+
+  unless removed_alias.empty?
+    puts "Removed Alias:"
+
+    removed_alias.each do |alias_name|
+      puts "- #{alias_name}"
+    end
   end
 end
 

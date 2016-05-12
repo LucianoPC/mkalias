@@ -89,11 +89,10 @@ describe Mkalias do
     end
 
     it 'remove alias' do
-      removed_cd = Mkalias.remove_alias('cd', FILE_PATH)
-      removed_mv = Mkalias.remove_alias('mv', FILE_PATH)
+      removed_alias = Mkalias.remove_alias(['cd', 'mv'], FILE_PATH)
 
-      expect(removed_cd).to be true
-      expect(removed_mv).to be true
+      expect(removed_alias).to include 'cd'
+      expect(removed_alias).to include 'mv'
     end
   end
 end
