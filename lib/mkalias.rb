@@ -39,7 +39,35 @@ module Mkalias
     alias_names.to_a
   end
 
-  def self.show_alias(alias_name, file_path=BASHRC_PATH)
+  def self.show_alias(alias_names, file_path=BASHRC_PATH)
+    alias_names = [alias_names] unless alias_names.kind_of?(Array)
+
+    alias_functions = {}
+    alias_names.each do |alias_name|
+        alias_functions[alias_name] = Mkalias.get_alias_function(alias_name,
+                                                                 file_path)
+    end
+
+    alias_functions.select!{ |key, value| !value.nil? }
+    return alias_functions
+  end
+
+  def self.remove_alias(alias_name, file_path=BASHRC_PATH)
+    alias_names = Mkalias.list_alias(file_path)
+    return false unless alias_names.include?(alias_name)
+
+    alias_regex = /\bmkalias_#{alias_name}[(']/
+
+    lines = File.readlines(file_path).reject{ |line| line =~ alias_regex }
+
+    File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
+
+    return true
+  end
+
+  private
+
+  def self.get_alias_function(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
@@ -54,18 +82,5 @@ module Mkalias
     end
 
     nil
-  end
-
-  def self.remove_alias(alias_name, file_path=BASHRC_PATH)
-    alias_names = Mkalias.list_alias(file_path)
-    return false unless alias_names.include?(alias_name)
-
-    alias_regex = /\bmkalias_#{alias_name}[(']/
-
-    lines = File.readlines(file_path).reject{ |line| line =~ alias_regex }
-
-    File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
-
-    return true
   end
 end
