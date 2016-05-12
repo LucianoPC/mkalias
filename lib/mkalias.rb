@@ -42,14 +42,14 @@ module Mkalias
   def self.show_alias(alias_names, file_path=BASHRC_PATH)
     alias_names = [alias_names] unless alias_names.kind_of?(Array)
 
-    alias_functions = {}
+    alias_commands = {}
     alias_names.each do |alias_name|
-      alias_functions[alias_name] = Mkalias.get_alias_function(alias_name,
+      alias_commands[alias_name] = Mkalias.get_alias_command(alias_name,
                                                                file_path)
     end
 
-    alias_functions.select!{ |key, value| !value.nil? }
-    return alias_functions
+    alias_commands.select!{ |key, value| !value.nil? }
+    return alias_commands
   end
 
   def self.remove_alias(alias_names, file_path=BASHRC_PATH)
@@ -66,17 +66,17 @@ module Mkalias
 
   private
 
-  def self.get_alias_function(alias_name, file_path=BASHRC_PATH)
+  def self.get_alias_command(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
     alias_regex = /\bmkalias_#{alias_name}[(]/
-    function_regex = /[{](.*)[;]/
+    command_regex = /[{](.*)[;]/
 
-    alias_functions = File.foreach(file_path).grep(alias_regex)
+    alias_commands = File.foreach(file_path).grep(alias_regex)
 
-    alias_functions.each do |function|
-      result = function.match(function_regex)
+    alias_commands.each do |command|
+      result = command.match(command_regex)
         return result.captures.first.split(';').each{ |c| c.strip! } if result
     end
 

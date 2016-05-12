@@ -75,17 +75,17 @@ describe Mkalias do
     end
 
     it 'show alias commands' do
-      alias_functions = Mkalias.show_alias(['cd', 'mv'], FILE_PATH)
+      alias_commands = Mkalias.show_alias(['cd', 'mv'], FILE_PATH)
 
-      expect(alias_functions['cd']).to include "ls -la"
-      expect(alias_functions['mv']).to include "touch"
-      expect(alias_functions['mv']).to include "pwd"
+      expect(alias_commands['cd']).to include "ls -la"
+      expect(alias_commands['mv']).to include "touch"
+      expect(alias_commands['mv']).to include "pwd"
     end
 
     it 'dont show alias commands if alias not exists' do
-      alias_functions = Mkalias.show_alias(['dd'], FILE_PATH)
+      alias_commands = Mkalias.show_alias(['dd'], FILE_PATH)
 
-      expect(alias_functions.keys).not_to include "dd"
+      expect(alias_commands.keys).not_to include "dd"
     end
 
     it 'remove alias' do

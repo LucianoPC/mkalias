@@ -72,11 +72,11 @@ def show_alias
   end
 
   unless commands.empty?
-    commands.each do |alias_name, alias_functions|
+    commands.each do |alias_name, alias_commands|
       puts "-> #{alias_name}"
 
-      alias_functions.each do |alias_function|
-        puts " $ #{alias_function}"
+      alias_commands.each do |alias_command|
+        puts " $ #{alias_command}"
       end
       puts ""
     end
