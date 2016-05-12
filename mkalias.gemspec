@@ -1,4 +1,4 @@
-# coding: utf-8
+  # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'mkalias/version'
@@ -9,8 +9,10 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Luciano Prestes Cavalcanti']
   spec.email         = ['lucianopcbr@gmail.com']
 
-  spec.summary       = %q{An make alias}
-  spec.description   = %q{Make alias on yours command line}
+  spec.summary       = 'A program to create bash alias'
+  spec.description   = 'MKalias is a alias manage, when you can just add' \
+                       ' a command and you can add a new alias, list the' \
+                       ' alias, show the alias command or remove the alias.'
   spec.homepage      = 'https://github.com/LucianoPC/mkalias'
   spec.license       = 'GPL-3.0'
 
