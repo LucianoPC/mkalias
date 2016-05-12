@@ -29,7 +29,7 @@ def new_alias
 
   if result
     puts " - Created Alias: #{alias_name}"
-    puts " - Run '$ bash --login' to use your alias"
+    puts " - Run '$ source ~/.bashrc' to use your alias"
   else
     puts " ERROR: O Alias [#{alias_name}] já existe"
   end
