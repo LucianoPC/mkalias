@@ -17,7 +17,7 @@ describe Mkalias do
         file.puts("function mkalias_cd(){ ls -la; }\n")
         file.puts("\n")
         file.puts("alias mv='mkalias_mv'\n")
-        file.puts("function mkalias_mv(){ touch; }\n")
+        file.puts("function mkalias_mv(){ touch; pwd; }\n")
       end
     end
 
@@ -54,8 +54,8 @@ describe Mkalias do
       Mkalias.new_alias(alias_name, commands, FILE_PATH)
       lines = File.readlines(FILE_PATH)
 
-      expect(lines).to include("alias ls='mkalias_ls'\n")
-      expect(lines).to include("function mkalias_ls(){ pwd; echo a; cd; }\n")
+      expect(lines).to include "alias ls='mkalias_ls'\n"
+      expect(lines).to include "function mkalias_ls(){ pwd; echo a; cd; }\n"
     end
 
     it 'dont create new alias with an existing name' do
@@ -70,16 +70,17 @@ describe Mkalias do
     it 'list all alias' do
       alias_names = Mkalias.list_alias(FILE_PATH)
 
-      expect(alias_names).to include('cd')
-      expect(alias_names).to include('mv')
+      expect(alias_names).to include 'cd'
+      expect(alias_names).to include 'mv'
     end
 
     it 'show alias commands' do
       alias_cd = Mkalias.show_alias('cd', FILE_PATH)
       alias_mv = Mkalias.show_alias('mv', FILE_PATH)
 
-      expect(alias_cd).to eq "ls -la"
-      expect(alias_mv).to eq "touch"
+      expect(alias_cd).to include "ls -la"
+      expect(alias_mv).to include "touch"
+      expect(alias_mv).to include "pwd"
     end
 
     it 'remove alias' do

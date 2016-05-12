@@ -49,11 +49,13 @@ def show_alias
     usage
   end
   alias_name = ARGV[1]
-  alias_function = Mkalias.show_alias(alias_name)
+  commands = Mkalias.show_alias(alias_name)
 
-  if alias_function
+  if commands
     puts "#{alias_name}:"
-    puts " #{alias_function}"
+    commands.each do |command|
+      puts " #{command}"
+    end
   else
     puts "Alias [#{alias_name}] not founded"
   end

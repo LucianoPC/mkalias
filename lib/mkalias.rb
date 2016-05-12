@@ -50,7 +50,7 @@ module Mkalias
 
     alias_functions.each do |function|
       result = function.match(function_regex)
-      return result.captures.first.strip if result
+        return result.captures.first.split(';').each{ |c| c.strip! } if result
     end
 
     nil
