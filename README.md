@@ -21,21 +21,14 @@ Or install it yourself as:
 
 ## Usage
 
-run: $ mkalias [option]
-
-option: new    -> mkalias new [alias] [command]
-
-option: list   -> mkalias list
-
-option: show   -> mkalias show [alias]
-
-option: remove   -> mkalias remove [alias]
-
-Attention: To make alias with args use #. Example:
-
-  $ mkalias new [alias] "echo #1 #2 #3"
-
-  Then you can use: $ [alias] arg1 arg2 arg3
+    run: $ mkalias [option]
+    option: new    -> mkalias new [alias] [command]
+    option: list   -> mkalias list
+    option: show   -> mkalias show [alias]
+    option: remove   -> mkalias remove [alias]
+    Attention: To make alias with args use #. Example:
+               $ mkalias new [alias] "echo #1 #2 #3"
+               Then you can use: $ [alias] arg1 arg2 arg3
 
 
 ## Development
