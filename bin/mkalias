@@ -7,7 +7,8 @@ VALID_OPTIONS = ['new', 'list', 'show', 'remove']
 
 def usage
   puts "Usage: mkalias [option]"
-  puts "option: new \t -> mkalias new [alias] [command]"
+  puts "option: new \t -> mkalias new [alias] [command 1] [command 2] ..." \
+       " [command n]"
   puts "option: list \t -> mkalias list"
   puts "option: show \t -> mkalias show [alias]"
   puts "option: remove \t -> mkalias remove [alias]"

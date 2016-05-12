@@ -22,7 +22,7 @@ Or install it yourself as:
 ## Usage
 
     run: $ mkalias [option]
-    option: new    -> mkalias new [alias] [command]
+    option: new    -> mkalias new [alias] [command] [command 2]...[command n]
     option: list   -> mkalias list
     option: show   -> mkalias show [alias]
     option: remove   -> mkalias remove [alias]
