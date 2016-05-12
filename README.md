@@ -23,20 +23,22 @@ Or install it yourself as:
 
     run: $ mkalias [option]
 
-    option: new      -> mkalias new [alias] [command 1] [command 2] ... [command n]
-    - Create a new alias to run the commands
+		options:
 
-    option: list     -> mkalias list
-    - List all alias
+     new      $ mkalias new [alias] [command 1] [command 2] ... [command n]
+              - Create a new alias to run the commands
 
-    option: show     -> mkalias show
-    - Show commands of all alias
+     list     $ mkalias list
+              - List all alias
 
-    option: show     -> mkalias show [alias 1] [alias 2] ... [alias n]
-    - Show commands of the specified alias
+     show     $ mkalias show
+              - Show commands of all alias
 
-    option: remove   -> mkalias remove [alias 1] [alias 2] ... [alias n]
-    - Remove the specified alias
+              $ mkalias show [alias 1] [alias 2] ... [alias n]
+              - Show commands of the specified alias
+
+     remove   $ mkalias remove [alias 1] [alias 2] ... [alias n]
+              - Remove the specified alias
 
     Attention: To make alias with args use #. Example:
                $ mkalias new [alias] "echo #1 #2 #3"
