@@ -1,4 +1,4 @@
-# Mkalias [![Build Status](https://travis-ci.org/LucianoPC/mkalias.svg?branch=master)](https://travis-ci.org/LucianoPC/mkalias) [![Code Climate](https://codeclimate.com/github/LucianoPC/mkalias/badges/gpa.svg)](https://codeclimate.com/github/LucianoPC/mkalias) [![Gem Version](https://badge.fury.io/rb/mkalias.svg)](https://badge.fury.io/rb/mkalias) 
+# Mkalias [![Build Status](https://travis-ci.org/LucianoPC/mkalias.svg?branch=master)](https://travis-ci.org/LucianoPC/mkalias) [![Code Climate](https://codeclimate.com/github/LucianoPC/mkalias/badges/gpa.svg)](https://codeclimate.com/github/LucianoPC/mkalias) [![Gem Version](https://badge.fury.io/rb/mkalias.svg)](https://badge.fury.io/rb/mkalias)
 
 MKalias is a gem to manage alias, when you can just add a command and you can
 add a new alias, list the alias, show the alias command or remove the alias.
@@ -25,20 +25,28 @@ Or install it yourself as:
 
 		options:
 
-     new      $ mkalias new [alias] [command 1] [command 2] ... [command n]
-              - Create a new alias to run the commands
+     new            $ mkalias new [alias] [command 1] [command 2] ... [command n]
+                    - Create a new alias to run the commands
 
-     list     $ mkalias list
-              - List all alias
+     list           $ mkalias list
+                    - List all alias
 
-     show     $ mkalias show
-              - Show commands of all alias
+     show           $ mkalias show
+                    - Show commands of all alias
 
-              $ mkalias show [alias 1] [alias 2] ... [alias n]
-              - Show commands of the specified alias
+                    $ mkalias show [alias 1] [alias 2] ... [alias n]
+                    - Show commands of the specified alias
 
-     remove   $ mkalias remove [alias 1] [alias 2] ... [alias n]
-              - Remove the specified alias
+     remove         $ mkalias remove [alias 1] [alias 2] ... [alias n]
+                    - Remove the specified alias
+
+		 add_signal     $ mkalias add_signal
+                    - Add signal to run 'source ~/.bashrc' when
+                    - add or remove an alias
+
+		 remove_signal  $ mkalias remove_signal"
+                    - Remove signal to run 'source ~/.bashrc' when
+                    - add or remove an alias
 
     Attention: To make alias with args use #. Example:
                $ mkalias new [alias] "echo #1 #2 #3"

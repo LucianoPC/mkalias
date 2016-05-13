@@ -3,7 +3,8 @@
 require "bundler/setup"
 require 'mkalias'
 
-VALID_OPTIONS = ['new', 'list', 'show', 'remove']
+VALID_OPTIONS = ['new', 'list', 'show', 'remove', 'add_signal',
+								 'remove_signal']
 
 def usage
   puts "Usage: mkalias [option]"
@@ -26,13 +27,21 @@ def usage
   puts " remove \t $ mkalias remove [alias 1] [alias 2] ... [alias n]"
   puts "\t\t - Remove the specified alias"
   puts ""
+	puts " add_signal \t $ mkalias add_signal"
+	puts "\t\t - Add signal to run 'source ~/.bashrc' when"
+	puts "\t\t - add or remove an alias"
+	puts ""
+	puts " remove_signal \t $ mkalias remove_signal"
+	puts "\t\t - Remove signal to run 'source ~/.bashrc' when"
+	puts "\t\t - add or remove an alias"
+	puts ""
   puts "Attention: To make alias with args use #. Example:"
   puts "           $ mkalias new [alias] \"echo #1 #2 #3\""
   puts "           - Then you can use: $ [alias] arg1 arg2 arg3"
   abort
 end
 
-def new_alias
+def new
   if ARGV.count < 3
     usage
   end
@@ -43,13 +52,13 @@ def new_alias
 
   if result
     puts " - Created Alias: #{alias_name}"
-    puts " - Run '$ source ~/.bashrc' to use your alias"
+		check_signal
   else
     puts " ERROR: O Alias [#{alias_name}] já existe"
   end
 end
 
-def list_alias
+def list
   alias_names = Mkalias.list_alias
 
   puts "Registered Alias:"
@@ -58,7 +67,7 @@ def list_alias
   end
 end
 
-def show_alias
+def show
   if ARGV.count < 2
     alias_names = Mkalias.list_alias
   else
@@ -85,7 +94,7 @@ def show_alias
   end
 end
 
-def remove_alias
+def remove
   if ARGV.count < 2
     usage
   end
@@ -105,7 +114,39 @@ def remove_alias
     removed_alias.each do |alias_name|
       puts "- #{alias_name}"
     end
+
+		check_signal
   end
+end
+
+def add_signal
+	result = Mkalias.add_signal
+
+	if result
+		puts "Add signal to call 'source ~/.bashrc'"
+    puts " - Run '$ source ~/.bashrc' to update your bash"
+	else
+		puts "The signal has already been added"
+	end
+end
+
+def remove_signal
+	result = Mkalias.remove_signal
+
+	if result
+		puts "The signal was removed"
+    puts " - Run '$ source ~/.bashrc' to update your bash"
+	else
+		puts "The signal does not exist to be removed"
+	end
+end
+
+def check_signal
+	if Mkalias.has_signal?
+		`kill -USR1 #{Process.ppid}`
+	else
+		puts " - Run '$ source ~/.bashrc' to use your alias"
+	end
 end
 
 def main
@@ -115,7 +156,7 @@ def main
 
   option = ARGV[0]
 
-	send("#{option}_alias")
+	send("#{option}")
 end
 
 main

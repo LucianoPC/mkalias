@@ -97,5 +97,31 @@ describe Mkalias do
       expect(alias_names).not_to include 'cd'
       expect(alias_names).not_to include 'mv'
     end
+
+		it 'add signal' do
+				result = Mkalias.add_signal(FILE_PATH)
+
+				expect(result).to be true
+		end
+
+		it 'dont add signal if already exists' do
+				Mkalias.add_signal(FILE_PATH)
+				result = Mkalias.add_signal(FILE_PATH)
+
+				expect(result).to be false
+		end
+
+		it 'remove signal' do
+				Mkalias.add_signal(FILE_PATH)
+				result = Mkalias.remove_signal(FILE_PATH)
+
+				expect(result).to be true
+		end
+
+		it 'dont remove signal unless already exists' do
+				result = Mkalias.remove_signal(FILE_PATH)
+
+				expect(result).to be false
+		end
   end
 end
