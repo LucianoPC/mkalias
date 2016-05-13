@@ -1,4 +1,4 @@
-# Mkalias [![Gem Version](https://badge.fury.io/rb/mkalias.svg)](https://badge.fury.io/rb/mkalias) [![Build Status](https://travis-ci.org/LucianoPC/mkalias.svg?branch=master)](https://travis-ci.org/LucianoPC/mkalias) [![Code Climate](https://codeclimate.com/github/LucianoPC/mkalias/badges/gpa.svg)](https://codeclimate.com/github/LucianoPC/mkalias)
+# Mkalias [![Build Status](https://travis-ci.org/LucianoPC/mkalias.svg?branch=master)](https://travis-ci.org/LucianoPC/mkalias) [![Code Climate](https://codeclimate.com/github/LucianoPC/mkalias/badges/gpa.svg)](https://codeclimate.com/github/LucianoPC/mkalias) [![Gem Version](https://badge.fury.io/rb/mkalias.svg)](https://badge.fury.io/rb/mkalias) 
 
 MKalias is a gem to manage alias, when you can just add a command and you can
 add a new alias, list the alias, show the alias command or remove the alias.
