@@ -115,17 +115,7 @@ def main
 
   option = ARGV[0]
 
-  if option == 'new'
-    new_alias
-  elsif option == 'list'
-    list_alias
-  elsif option == 'show'
-    show_alias
-  elsif option == 'remove'
-    remove_alias
-  else
-    usage
-  end
+	send("#{option}_alias")
 end
 
 main

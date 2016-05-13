@@ -10,7 +10,7 @@ module Mkalias
     return false if alias_names.include?(alias_name)
 
     commands = commands.join('; ') if commands.kind_of?(Array)
-    commands = commands.gsub('#', '$')
+    commands = commands.tr('#', '$')
 
     function_name = "mkalias_#{alias_name}"
     bash_function = "function #{function_name}(){ #{commands}; }"
@@ -48,7 +48,7 @@ module Mkalias
                                                                file_path)
     end
 
-    alias_commands.select!{ |key, value| !value.nil? }
+    alias_commands.select!{ |_, value| !value.nil? }
     return alias_commands
   end
 
@@ -63,8 +63,6 @@ module Mkalias
 
     return removed_alias
   end
-
-  private
 
   def self.get_alias_command(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
