@@ -33,7 +33,7 @@ describe Mkalias do
       lines = File.readlines(FILE_PATH)
 
       expect(lines).to include("alias ls='mkalias_ls'\n")
-      expect(lines).to include("function mkalias_ls(){ pwd; }\n")
+      expect(lines).to include("function mkalias_ls(){ pwd $@; }\n")
     end
 
     it 'create new alias with args' do

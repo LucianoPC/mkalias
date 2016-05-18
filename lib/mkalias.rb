@@ -3,15 +3,15 @@ require 'set'
 
 module Mkalias
 
-	SIGNAL_NAME = 'USR1'
+  SIGNAL_NAME = 'USR1'
   BASHRC_PATH = "#{File.expand_path('~')}/.bashrc"
 
   def self.new_alias(alias_name, commands, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return false if alias_names.include?(alias_name)
 
-    commands = commands.join('; ') if commands.kind_of?(Array)
-    commands = commands.tr('#', '$')
+    commands = Mkalias.prepare_commands(commands)
+    puts "commands: #{commands}"
 
     function_name = "mkalias_#{alias_name}"
     bash_function = "function #{function_name}(){ #{commands}; }"
@@ -23,7 +23,7 @@ module Mkalias
       file.puts(bash_function)
     end
 
-    true
+    return true
   end
 
   def self.list_alias(file_path=BASHRC_PATH)
@@ -50,7 +50,7 @@ module Mkalias
     end
 
     alias_commands.select!{ |_, value| !value.nil? }
-    return alias_commands
+    alias_commands
   end
 
   def self.remove_alias(alias_names, file_path=BASHRC_PATH)
@@ -62,36 +62,36 @@ module Mkalias
       removed_alias << alias_name if removed
     end
 
-    return removed_alias
+    removed_alias
   end
 
-	def self.add_signal(file_path=BASHRC_PATH)
-		return false if Mkalias.has_signal?(file_path)
+  def self.add_signal(file_path=BASHRC_PATH)
+    return false if Mkalias.has_signal?(file_path)
 
-		trap_command = "trap 'source #{file_path}' #{SIGNAL_NAME}"
+    trap_command = "trap 'source #{file_path}' #{SIGNAL_NAME}"
     open(file_path, 'a') do |file|
       file.puts("\n")
       file.puts(trap_command)
     end
 
-		true
-	end
+    return true
+  end
 
-	def self.remove_signal(file_path=BASHRC_PATH)
-		return false unless has_signal?(file_path)
+  def self.remove_signal(file_path=BASHRC_PATH)
+    return false unless has_signal?(file_path)
 
-		trap_regex = /\btrap\s'source\s(.*)\sUSR1/
+    trap_regex = /\btrap\s'source\s(.*)\sUSR1/
 
     lines = File.readlines(file_path).reject{ |line| line =~ trap_regex }
     File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
 
-		true
-	end
+    return true
+  end
 
-	def self.has_signal?(file_path=BASHRC_PATH)
-		trap_regex = /\btrap\s'source\s(.*)\sUSR1/
-		!File.foreach(file_path).grep(trap_regex).empty?
-	end
+  def self.has_signal?(file_path=BASHRC_PATH)
+    trap_regex = /\btrap\s'source\s(.*)\sUSR1/
+    !File.foreach(file_path).grep(trap_regex).empty?
+  end
 
   def self.get_alias_command(alias_name, file_path=BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
@@ -107,7 +107,7 @@ module Mkalias
         return result.captures.first.split(';').each{ |c| c.strip! } if result
     end
 
-    nil
+    return nil
   end
 
   def self.remove_one_alias(alias_name, file_path=BASHRC_PATH)
@@ -121,5 +121,13 @@ module Mkalias
     File.open(file_path, "w"){ |f| lines.each { |line| f.puts line } }
 
     return true
+  end
+
+  def self.prepare_commands(commands)
+    commands = commands.join('; ') if commands.kind_of?(Array)
+    commands = "#{commands} $@" unless commands.include?(';')
+    commands = commands.tr('#', '$')
+
+    commands
   end
 end
