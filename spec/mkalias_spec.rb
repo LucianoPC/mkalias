@@ -18,6 +18,9 @@ describe Mkalias do
         file.puts("\n")
         file.puts("alias mv='mkalias_mv'\n")
         file.puts("function mkalias_mv(){ touch; pwd; }\n")
+        file.puts("\n")
+        file.puts("alias fkd='mkalias_fkd'\n")
+        file.puts("function mkalias_fkd(){ flake8 $(git ls-files -m) $@; }\n")
       end
     end
 
@@ -72,14 +75,16 @@ describe Mkalias do
 
       expect(alias_names).to include 'cd'
       expect(alias_names).to include 'mv'
+      expect(alias_names).to include 'fkd'
     end
 
     it 'show alias commands' do
-      alias_commands = Mkalias.show_alias(['cd', 'mv'], FILE_PATH)
+      alias_commands = Mkalias.show_alias(['cd', 'mv', 'fkd'], FILE_PATH)
 
       expect(alias_commands['cd']).to include "ls -la"
       expect(alias_commands['mv']).to include "touch"
       expect(alias_commands['mv']).to include "pwd"
+      expect(alias_commands['fkd']).to include "flake8 $(git ls-files -m) $@"
     end
 
     it 'dont show alias commands if alias not exists' do

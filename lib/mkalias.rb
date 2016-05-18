@@ -28,7 +28,7 @@ module Mkalias
   def self.list_alias(file_path=BASHRC_PATH)
     alias_names = Set.new
 
-    alias_regex = /\bmkalias_(.*)[(]/
+    alias_regex = /mkalias_(.*?)\(/
 
     alias_functions = File.foreach(file_path).grep(alias_regex)
     alias_functions.each do |function|
@@ -96,7 +96,7 @@ module Mkalias
     alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
-    alias_regex = /\bmkalias_#{alias_name}[(]/
+    alias_regex = /mkalias_#{alias_name}\(/
     command_regex = /[{](.*)[;]/
 
     alias_commands = File.foreach(file_path).grep(alias_regex)
