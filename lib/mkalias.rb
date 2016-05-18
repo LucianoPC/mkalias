@@ -11,7 +11,6 @@ module Mkalias
     return false if alias_names.include?(alias_name)
 
     commands = Mkalias.prepare_commands(commands)
-    puts "commands: #{commands}"
 
     function_name = "mkalias_#{alias_name}"
     bash_function = "function #{function_name}(){ #{commands}; }"
