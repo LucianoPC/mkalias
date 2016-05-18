@@ -125,7 +125,9 @@ module Mkalias
 
   def self.prepare_commands(commands)
     commands = commands.join('; ') if commands.kind_of?(Array)
-    commands = "#{commands} $@" unless commands.include?(';')
+    unless commands.include?(';') or commands.include?('#')
+        commands = "#{commands} $@"
+    end
     commands = commands.tr('#', '$')
 
     commands
