@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
                        ' the alias, show the alias command or remove the' \
                        ' alias.'
   spec.homepage      = 'https://github.com/LucianoPC/mkalias'
-  spec.license       = 'GPL-3.0'
+  spec.license       = 'Expat'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
