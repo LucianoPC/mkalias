@@ -6,38 +6,73 @@ require 'mkalias'
 VALID_OPTIONS = %w(new list show remove add_signal remove_signal).freeze
 
 def usage
-  puts 'Usage: mkalias [option]'
-  puts ''
-  puts 'options:'
-  puts ''
-  puts " new \t\t $ mkalias new [alias] [command 1] [command 2] ..." \
-       ' [command n]'
-  puts "\t\t - Create a new alias to run the commands"
-  puts ''
-  puts " list \t\t $ mkalias list"
-  puts "\t\t - List all alias"
-  puts ''
-  puts " show \t\t $ mkalias show"
-  puts "\t\t - Show commands of all alias"
-  puts ''
-  puts "\t\t $ mkalias show [alias 1] [alias 2] ... [alias n]"
-  puts "\t\t - Show commands of the specified alias"
-  puts ''
-  puts " remove \t $ mkalias remove [alias 1] [alias 2] ... [alias n]"
-  puts "\t\t - Remove the specified alias"
-  puts ''
-  puts " add_signal \t $ mkalias add_signal"
-  puts "\t\t - Add signal to run 'source ~/.bashrc' when"
-  puts "\t\t - add or remove an alias"
-  puts ''
-  puts " remove_signal \t $ mkalias remove_signal"
-  puts "\t\t - Remove signal to run 'source ~/.bashrc' when"
-  puts "\t\t - add or remove an alias"
-  puts ''
-  puts 'Attention: To make alias with args use #. Example:'
-  puts '           $ mkalias new [alias] "echo #1 #2 #3"'
-  puts '           - Then you can use: $ [alias] arg1 arg2 arg3'
+  puts usage_header
+  puts usage_option_new
+  puts usage_option_list
+  puts usage_option_show
+  puts usage_option_remove
+  puts usage_option_signals
+  puts usage_attention
   abort
+end
+
+def usage_header
+  %(
+  Usage: mkalias [option]
+
+  options:
+  )
+end
+
+def usage_option_new
+  %(
+  new \t\t $ mkalias new [alias] [command 1] [command 2] ... [command n]
+  \t\t - Create a new alias to run the commands
+  )
+end
+
+def usage_option_list
+  %(
+  list \t\t $ mkalias list
+  \t\t - List all alias
+  )
+end
+
+def usage_option_show
+  %(
+  show \t\t $ mkalias show
+  \t\t - Show commands of all alias
+
+  \t\t $ mkalias show [alias 1] [alias 2] ... [alias n]
+  \t\t - Show commands of the specified alias
+  )
+end
+
+def usage_option_remove
+  %(
+  remove \t $ mkalias remove [alias 1] [alias 2] ... [alias n]
+  \t\t - Remove the specified alias
+  )
+end
+
+def usage_option_signals
+  %(
+  add_signal \t $ mkalias add_signal
+  \t\t - Add signal to run 'source ~/.bashrc' when
+  \t\t - add or remove an alias
+
+  remove_signal  $ mkalias remove_signal
+  \t\t - Remove signal to run 'source ~/.bashrc' when
+  \t\t - add or remove an alias
+  )
+end
+
+def usage_attention
+  %(
+  Attention: To make alias with args use #. Example:
+             $ mkalias new [alias] "echo #1 #2 #3"
+             - Then you can use: $ [alias] arg1 arg2 arg3
+  )
 end
 
 def new
@@ -133,7 +168,6 @@ def check_signal
 end
 
 def main
-  print "VALID_OPTIONS: #{!VALID_OPTIONS.include?(ARGV[0])}\n"
   usage if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
 
   option = ARGV[0]
