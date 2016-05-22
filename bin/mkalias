@@ -1,50 +1,48 @@
 #!/usr/bin/env ruby
 
-require "bundler/setup"
+require 'bundler/setup'
 require 'mkalias'
 
-VALID_OPTIONS = ['new', 'list', 'show', 'remove', 'add_signal',
-								 'remove_signal']
+VALID_OPTIONS = %w('new' 'list' 'show' 'remove' 'add_signal'
+                   'remove_signal').freeze
 
 def usage
-  puts "Usage: mkalias [option]"
-  puts ""
-	puts "options:"
-	puts ""
+  puts 'Usage: mkalias [option]'
+  puts ''
+  puts 'options:'
+  puts ''
   puts " new \t\t $ mkalias new [alias] [command 1] [command 2] ..." \
-       " [command n]"
+       ' [command n]'
   puts "\t\t - Create a new alias to run the commands"
-  puts ""
+  puts ''
   puts " list \t\t $ mkalias list"
   puts "\t\t - List all alias"
-  puts ""
+  puts ''
   puts " show \t\t $ mkalias show"
   puts "\t\t - Show commands of all alias"
-  puts ""
+  puts ''
   puts "\t\t $ mkalias show [alias 1] [alias 2] ... [alias n]"
   puts "\t\t - Show commands of the specified alias"
-  puts ""
+  puts ''
   puts " remove \t $ mkalias remove [alias 1] [alias 2] ... [alias n]"
   puts "\t\t - Remove the specified alias"
-  puts ""
-	puts " add_signal \t $ mkalias add_signal"
-	puts "\t\t - Add signal to run 'source ~/.bashrc' when"
-	puts "\t\t - add or remove an alias"
-	puts ""
-	puts " remove_signal \t $ mkalias remove_signal"
-	puts "\t\t - Remove signal to run 'source ~/.bashrc' when"
-	puts "\t\t - add or remove an alias"
-	puts ""
-  puts "Attention: To make alias with args use #. Example:"
-  puts "           $ mkalias new [alias] \"echo #1 #2 #3\""
-  puts "           - Then you can use: $ [alias] arg1 arg2 arg3"
+  puts ''
+  puts " add_signal \t $ mkalias add_signal"
+  puts "\t\t - Add signal to run 'source ~/.bashrc' when"
+  puts "\t\t - add or remove an alias"
+  puts ''
+  puts " remove_signal \t $ mkalias remove_signal"
+  puts "\t\t - Remove signal to run 'source ~/.bashrc' when"
+  puts "\t\t - add or remove an alias"
+  puts ''
+  puts 'Attention: To make alias with args use #. Example:'
+  puts '           $ mkalias new [alias] "echo #1 #2 #3"'
+  puts '           - Then you can use: $ [alias] arg1 arg2 arg3'
   abort
 end
 
 def new
-  if ARGV.count < 3
-    usage
-  end
+  usage if ARGV.count < 3
 
   alias_name = ARGV[1]
   commands = ARGV[2..-1]
@@ -52,7 +50,7 @@ def new
 
   if result
     puts " - Created Alias: #{alias_name}"
-		check_signal
+    check_signal
   else
     puts " ERROR: O Alias [#{alias_name}] já existe"
   end
@@ -61,102 +59,85 @@ end
 def list
   alias_names = Mkalias.list_alias
 
-  puts "Registered Alias:"
+  puts 'Registered Alias:'
   alias_names.each do |alias_name|
     puts " - #{alias_name}"
   end
 end
 
-def show
-  if ARGV.count < 2
-    alias_names = Mkalias.list_alias
-  else
-    alias_names = ARGV[1..-1]
-  end
-  commands = Mkalias.show_alias(alias_names)
-
-  alias_not_founded = alias_names - commands.keys
+def check_alias_exists(alias_list, used_alias_names)
+  alias_not_founded = alias_list - used_alias_names
   unless alias_not_founded.empty?
     alias_not_founded = alias_not_founded.join(', ')
     puts "Alias not founded: #{alias_not_founded}"
-    puts ""
+    puts ''
   end
+end
+
+def show
+  alias_names = ARGV.count < 2 ? Mkalias.list_alias : ARGV[1..-1]
+  commands = Mkalias.show_alias(alias_names)
+
+  check_alias_exists(alias_names, commands.keys)
 
   unless commands.empty?
     commands.each do |alias_name, alias_commands|
       puts "-> #{alias_name}"
-
-      alias_commands.each do |alias_command|
-        puts " $ #{alias_command}"
-      end
-      puts ""
+      alias_commands.each { |alias_command| puts " $ #{alias_command}" }
+      puts ''
     end
   end
 end
 
 def remove
-  if ARGV.count < 2
-    usage
-  end
+  usage if ARGV.count < 2
+
   alias_names = ARGV[1..-1]
   removed_alias = Mkalias.remove_alias(alias_names)
 
-  alias_not_founded = alias_names - removed_alias
-  unless alias_not_founded.empty?
-    alias_not_founded = alias_not_founded.join(', ')
-    puts "Alias not founded: #{alias_not_founded}"
-    puts ""
-  end
-
+  check_alias_exists(alias_names, removed_alias)
   unless removed_alias.empty?
-    puts "Removed Alias:"
-
-    removed_alias.each do |alias_name|
-      puts "- #{alias_name}"
-    end
-
-		check_signal
+    puts 'Removed Alias:'
+    removed_alias.each { |alias_name| puts "- #{alias_name}" }
+    check_signal
   end
 end
 
 def add_signal
-	result = Mkalias.add_signal
+  result = Mkalias.add_signal
 
-	if result
-		puts "Add signal to call 'source ~/.bashrc'"
+  if result
+    puts "Add signal to call 'source ~/.bashrc'"
     puts " - Run '$ source ~/.bashrc' to update your bash"
-	else
-		puts "The signal has already been added"
-	end
+  else
+    puts 'The signal has already been added'
+  end
 end
 
 def remove_signal
-	result = Mkalias.remove_signal
+  result = Mkalias.remove_signal
 
-	if result
-		puts "The signal was removed"
+  if result
+    puts 'The signal was removed'
     puts " - Run '$ source ~/.bashrc' to update your bash"
-	else
-		puts "The signal does not exist to be removed"
-	end
+  else
+    puts 'The signal does not exist to be removed'
+  end
 end
 
 def check_signal
-	if Mkalias.has_signal?
-		`kill -USR1 #{Process.ppid}`
-	else
-		puts " - Run '$ source ~/.bashrc' to use your alias"
-	end
+  if Mkalias.has_signal?
+    `kill -USR1 #{Process.ppid}`
+  else
+    puts " - Run '$ source ~/.bashrc' to use your alias"
+  end
 end
 
 def main
-  if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
-    usage
-  end
+  usage if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
 
   option = ARGV[0]
-
-	send("#{option}")
+  send(option.to_s)
 end
 
 main
