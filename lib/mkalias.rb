@@ -1,12 +1,14 @@
 require 'mkalias/version'
 require 'set'
 
-# Class to manage alias
+# Module to manage alias
 module Mkalias
+  module_function
+
   SIGNAL_NAME = 'USR1'.freeze
   BASHRC_PATH = "#{File.expand_path('~')}/.bashrc".freeze
 
-  def self.new_alias(alias_name, commands, file_path = BASHRC_PATH)
+  def new_alias(alias_name, commands, file_path = BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return false if alias_names.include?(alias_name)
 
@@ -23,7 +25,7 @@ module Mkalias
     true
   end
 
-  def self.list_alias(file_path = BASHRC_PATH)
+  def list_alias(file_path = BASHRC_PATH)
     alias_names = Set.new
 
     alias_regex = /mkalias_(.*?)\(/
@@ -37,7 +39,7 @@ module Mkalias
     alias_names.to_a
   end
 
-  def self.show_alias(alias_names, file_path = BASHRC_PATH)
+  def show_alias(alias_names, file_path = BASHRC_PATH)
     alias_names = [alias_names] unless alias_names.is_a?(Array)
 
     alias_commands = {}
@@ -50,7 +52,7 @@ module Mkalias
     alias_commands
   end
 
-  def self.remove_alias(alias_names, file_path = BASHRC_PATH)
+  def remove_alias(alias_names, file_path = BASHRC_PATH)
     alias_names = [alias_names] unless alias_names.is_a?(Array)
 
     removed_alias = []
@@ -62,7 +64,7 @@ module Mkalias
     removed_alias
   end
 
-  def self.add_signal(file_path = BASHRC_PATH)
+  def add_signal(file_path = BASHRC_PATH)
     return false if Mkalias.signal?(file_path)
 
     trap_command = "trap 'source #{file_path}' #{SIGNAL_NAME}"
@@ -74,7 +76,7 @@ module Mkalias
     true
   end
 
-  def self.remove_signal(file_path = BASHRC_PATH)
+  def remove_signal(file_path = BASHRC_PATH)
     return false unless signal?(file_path)
 
     trap_regex = /\btrap\s'source\s(.*)\sUSR1/
@@ -85,12 +87,12 @@ module Mkalias
     true
   end
 
-  def self.signal?(file_path = BASHRC_PATH)
+  def signal?(file_path = BASHRC_PATH)
     trap_regex = /\btrap\s'source\s(.*)\sUSR1/
     !File.foreach(file_path).grep(trap_regex).empty?
   end
 
-  def self.get_alias_command(alias_name, file_path = BASHRC_PATH)
+  def get_alias_command(alias_name, file_path = BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
@@ -105,7 +107,7 @@ module Mkalias
     end
   end
 
-  def self.remove_one_alias(alias_name, file_path = BASHRC_PATH)
+  def remove_one_alias(alias_name, file_path = BASHRC_PATH)
     alias_names = Mkalias.list_alias(file_path)
     return false unless alias_names.include?(alias_name)
 
@@ -116,7 +118,7 @@ module Mkalias
     File.open(file_path, 'w') { |f| lines.each { |line| f.puts line } }
   end
 
-  def self.prepare_commands(commands)
+  def prepare_commands(commands)
     commands = commands.join('; ') if commands.is_a?(Array)
     unless commands.include?(';') || commands.include?('#')
       commands = "#{commands} $@"
