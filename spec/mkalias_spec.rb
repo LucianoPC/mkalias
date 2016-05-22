@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-FILE_PATH = './test_bashrc'
+FILE_PATH = './test_bashrc'.freeze
 
 describe Mkalias do
   it 'has a version number' do
@@ -79,22 +79,22 @@ describe Mkalias do
     end
 
     it 'show alias commands' do
-      alias_commands = Mkalias.show_alias(['cd', 'mv', 'fkd'], FILE_PATH)
+      alias_commands = Mkalias.show_alias(%w('cd', 'mv', 'fkd'), FILE_PATH)
 
-      expect(alias_commands['cd']).to include "ls -la"
-      expect(alias_commands['mv']).to include "touch"
-      expect(alias_commands['mv']).to include "pwd"
-      expect(alias_commands['fkd']).to include "flake8 $(git ls-files -m) $@"
+      expect(alias_commands['cd']).to include 'ls -la'
+      expect(alias_commands['mv']).to include 'touch'
+      expect(alias_commands['mv']).to include 'pwd'
+      expect(alias_commands['fkd']).to include 'flake8 $(git ls-files -m) $@'
     end
 
     it 'dont show alias commands if alias not exists' do
       alias_commands = Mkalias.show_alias(['dd'], FILE_PATH)
 
-      expect(alias_commands.keys).not_to include "dd"
+      expect(alias_commands.keys).not_to include 'dd'
     end
 
     it 'remove alias' do
-      removed_alias = Mkalias.remove_alias(['cd', 'mv'], FILE_PATH)
+      removed_alias = Mkalias.remove_alias(%w('cd', 'mv'), FILE_PATH)
       alias_names = Mkalias.list_alias(FILE_PATH)
 
       expect(removed_alias).to include 'cd'
@@ -103,30 +103,30 @@ describe Mkalias do
       expect(alias_names).not_to include 'mv'
     end
 
-		it 'add signal' do
-				result = Mkalias.add_signal(FILE_PATH)
+    it 'add signal' do
+      result = Mkalias.add_signal(FILE_PATH)
 
-				expect(result).to be true
-		end
+      expect(result).to be true
+    end
 
-		it 'dont add signal if already exists' do
-				Mkalias.add_signal(FILE_PATH)
-				result = Mkalias.add_signal(FILE_PATH)
+    it 'dont add signal if already exists' do
+      Mkalias.add_signal(FILE_PATH)
+      result = Mkalias.add_signal(FILE_PATH)
 
-				expect(result).to be false
-		end
+      expect(result).to be false
+    end
 
-		it 'remove signal' do
-				Mkalias.add_signal(FILE_PATH)
-				result = Mkalias.remove_signal(FILE_PATH)
+    it 'remove signal' do
+      Mkalias.add_signal(FILE_PATH)
+      result = Mkalias.remove_signal(FILE_PATH)
 
-				expect(result).to be true
-		end
+      expect(result).to be true
+    end
 
-		it 'dont remove signal unless already exists' do
-				result = Mkalias.remove_signal(FILE_PATH)
+    it 'dont remove signal unless already exists' do
+      result = Mkalias.remove_signal(FILE_PATH)
 
-				expect(result).to be false
-		end
+      expect(result).to be false
+    end
   end
 end
