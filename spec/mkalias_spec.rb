@@ -79,7 +79,7 @@ describe Mkalias do
     end
 
     it 'show alias commands' do
-      alias_commands = Mkalias.show_alias(%w('cd', 'mv', 'fkd'), FILE_PATH)
+      alias_commands = Mkalias.show_alias(%w(cd mv fkd), FILE_PATH)
 
       expect(alias_commands['cd']).to include 'ls -la'
       expect(alias_commands['mv']).to include 'touch'
@@ -94,7 +94,7 @@ describe Mkalias do
     end
 
     it 'remove alias' do
-      removed_alias = Mkalias.remove_alias(%w('cd', 'mv'), FILE_PATH)
+      removed_alias = Mkalias.remove_alias(%w(cd mv), FILE_PATH)
       alias_names = Mkalias.list_alias(FILE_PATH)
 
       expect(removed_alias).to include 'cd'
