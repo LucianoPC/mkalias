@@ -3,8 +3,7 @@
 require 'bundler/setup'
 require 'mkalias'
 
-VALID_OPTIONS = %w('new' 'list' 'show' 'remove' 'add_signal'
-                   'remove_signal').freeze
+VALID_OPTIONS = %w(new list show remove add_signal remove_signal).freeze
 
 def usage
   puts 'Usage: mkalias [option]'
@@ -126,7 +125,7 @@ def remove_signal
 end
 
 def check_signal
-  if Mkalias.has_signal?
+  if Mkalias.signal?
     `kill -USR1 #{Process.ppid}`
   else
     puts " - Run '$ source ~/.bashrc' to use your alias"
@@ -134,6 +133,7 @@ def check_signal
 end
 
 def main
+  print "VALID_OPTIONS: #{!VALID_OPTIONS.include?(ARGV[0])}\n"
   usage if ARGV.count == 0 || !VALID_OPTIONS.include?(ARGV[0])
 
   option = ARGV[0]
