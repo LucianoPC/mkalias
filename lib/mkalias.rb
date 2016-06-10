@@ -30,13 +30,10 @@ module Mkalias
 
     alias_regex = /mkalias_(.*?)\(/
 
-    alias_functions = File.foreach(file_path).grep(alias_regex)
-    alias_functions.each do |function|
-      result = function.match(alias_regex)
-      alias_names << result.captures.first if result
-    end
+    file_text = File.open(file_path) { |file| file.read }
+    alias_names = file_text.scan(alias_regex).flatten
 
-    alias_names.to_a
+    alias_names
   end
 
   def show_alias(alias_names, file_path = BASHRC_PATH)
@@ -96,15 +93,13 @@ module Mkalias
     alias_names = Mkalias.list_alias(file_path)
     return nil unless alias_names.include?(alias_name)
 
-    alias_regex = /mkalias_#{alias_name}\(/
-    command_regex = /[{](.*)[;]/
+    command_regex = /mkalias_#{alias_name}\(\)[{](.+)[;]/
 
-    alias_commands = File.foreach(file_path).grep(alias_regex)
+    file_text = File.open(file_path) { |file| file.read }
+    commands = file_text.scan(command_regex).flatten.first
+    commands = commands.split(';').each(&:strip!) unless commands
 
-    alias_commands.each do |command|
-      result = command.match(command_regex)
-      return result.captures.first.split(';').each(&:strip!) if result
-    end
+    commands
   end
 
   def remove_one_alias(alias_name, file_path = BASHRC_PATH)
