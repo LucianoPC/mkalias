@@ -26,11 +26,9 @@ module Mkalias
   end
 
   def list_alias(file_path = BASHRC_PATH)
-    alias_names = Set.new
-
     alias_regex = /mkalias_(.*?)\(/
 
-    file_text = File.open(file_path) { |file| file.read }
+    file_text = File.open(file_path, &:read)
     alias_names = file_text.scan(alias_regex).flatten
 
     alias_names
@@ -95,7 +93,7 @@ module Mkalias
 
     command_regex = /mkalias_#{alias_name}\(\)[{](.+)[;]/
 
-    file_text = File.open(file_path) { |file| file.read }
+    file_text = File.open(file_path, &:read)
     commands = file_text.scan(command_regex).flatten.first
     commands = commands.split(';').each(&:strip!) unless commands
 
