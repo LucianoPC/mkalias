@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.license       = 'Expat'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
+    f.match(%r{^(test|features)/})
   end
   spec.bindir = 'bin'
   spec.executables << 'mkalias'
