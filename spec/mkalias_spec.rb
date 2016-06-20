@@ -82,8 +82,8 @@ describe Mkalias do
       alias_commands = Mkalias.show_alias(%w(cd mv fkd), FILE_PATH)
 
       expect(alias_commands['cd']).to include 'ls -la'
-      expect(alias_commands['mv']).to include 'touch'
-      expect(alias_commands['mv']).to include 'pwd'
+      expect(alias_commands['mv'][0]).to eq 'touch'
+      expect(alias_commands['mv'][1]).to eq 'pwd'
       expect(alias_commands['fkd']).to include 'flake8 $(git ls-files -m) $@'
     end
 

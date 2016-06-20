@@ -95,7 +95,7 @@ module Mkalias
 
     file_text = File.open(file_path, &:read)
     commands = file_text.scan(command_regex).flatten.first
-    commands = commands.split(';').each(&:strip!) unless commands
+    commands = commands.split(';').each(&:strip!) if commands
 
     commands
   end
