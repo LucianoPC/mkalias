@@ -1,6 +1,7 @@
 require 'command'
 require 'commands/new'
 require 'commands/list'
+require 'commands/show'
 
 # Command 'mkalias' implementation
 class Mka < Command
@@ -24,6 +25,6 @@ class Mka < Command
   end
 
   def self.childrens
-    [New, List]
+    [New, List, Show]
   end
 end
