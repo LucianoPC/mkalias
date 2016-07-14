@@ -23,11 +23,17 @@ class Show < Command
   end
 
   def self.run(argv)
-    alias_names = Mkalias.list_alias
+    alias_names = ARGV.count < 2 ? Mkalias.list_alias : ARGV[1..-1]
+    commands = Mkalias.show_alias(alias_names)
 
-    puts 'Registered Alias:'
-    alias_names.each do |alias_name|
-      puts " - #{alias_name}"
+    check_alias_exists(alias_names, commands.keys)
+
+    unless commands.empty?
+      commands.each do |alias_name, alias_commands|
+        puts "-> #{alias_name}"
+        alias_commands.each { |alias_command| puts " $ #{alias_command}" }
+        puts ''
+      end
     end
   end
 
