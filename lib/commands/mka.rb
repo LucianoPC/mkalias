@@ -3,6 +3,8 @@ require 'commands/new'
 require 'commands/list'
 require 'commands/show'
 require 'commands/remove'
+require 'commands/add_signal'
+require 'commands/remove_signal'
 
 # Command 'mkalias' implementation
 class Mka < Command
@@ -26,6 +28,6 @@ class Mka < Command
   end
 
   def self.childrens
-    [New, List, Show, Remove]
+    [New, List, Show, Remove, AddSignal, RemoveSignal]
   end
 end
