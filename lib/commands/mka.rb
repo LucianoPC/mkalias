@@ -1,4 +1,5 @@
 require 'command'
+require 'commands/new'
 
 # Command 'mkalias' implementation
 class Mka < Command
@@ -22,6 +23,6 @@ class Mka < Command
   end
 
   def self.childrens
-    []
+    [New]
   end
 end
