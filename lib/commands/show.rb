@@ -26,7 +26,7 @@ class Show < Command
     alias_names = ARGV.count < 2 ? Mkalias.list_alias : ARGV[1..-1]
     commands = Mkalias.show_alias(alias_names)
 
-    check_alias_exists(alias_names, commands.keys)
+    CommandHelper.check_alias_exists(alias_names, commands.keys)
 
     unless commands.empty?
       commands.each do |alias_name, alias_commands|
@@ -34,15 +34,6 @@ class Show < Command
         alias_commands.each { |alias_command| puts " $ #{alias_command}" }
         puts ''
       end
-    end
-  end
-
-  def self.check_alias_exists(alias_list, used_alias_names)
-    alias_not_founded = alias_list - used_alias_names
-    unless alias_not_founded.empty?
-      alias_not_founded = alias_not_founded.join(', ')
-      puts "Alias not founded: #{alias_not_founded}"
-      puts ''
     end
   end
 end

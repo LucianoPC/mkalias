@@ -1,4 +1,5 @@
 require 'command'
+require 'command_helper'
 require 'commands/mka'
 
 require 'mkalias'
@@ -20,7 +21,7 @@ class New < Command
   end
 
   def self.run(argv)
-    check_run(argv)
+    CommandHelper.check_run(argv)
 
     alias_name = argv[0]
     commands = argv[1..-1]
@@ -32,24 +33,9 @@ class New < Command
   def self.print_result(result, alias_name)
     if result
       puts " - Created Alias: #{alias_name}"
-      check_signal
+      CommandHelper.check_signal
     else
       puts " ERROR: O Alias [#{alias_name}] já existe"
-    end
-  end
-
-  def self.check_run(argv)
-    if argv.empty?
-      parent.usage
-      abort
-    end
-  end
-
-  def self.check_signal
-    if Mkalias.signal?
-      `kill -USR1 #{Process.ppid}`
-    else
-      puts " - Run '$ source ~/.bashrc' to use your alias"
     end
   end
 end
