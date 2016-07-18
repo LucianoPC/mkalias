@@ -22,7 +22,7 @@ class Show < Command
     Mka
   end
 
-  def self.run(argv)
+  def self.run(*)
     alias_names = ARGV.count < 2 ? Mkalias.list_alias : ARGV[1..-1]
     commands = Mkalias.show_alias(alias_names)
 

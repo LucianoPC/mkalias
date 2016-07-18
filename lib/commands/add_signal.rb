@@ -4,7 +4,7 @@ require 'commands/mka'
 require 'mkalias'
 
 # Command 'mkalias add_signal' implementation
-  class AddSignal < Command
+class AddSignal < Command
   def self.options_messages
     %(  add_signal \t $ mkalias add_signal
   \t\t - Add signal to run 'source ~/.bashrc' when

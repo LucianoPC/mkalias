@@ -2,11 +2,13 @@
 module CommandHelper
   module_function
 
-  def check_run(argv)
+  def check_run(argv, parent)
     if argv.empty?
       parent.usage
-      abort
+      exit(-1)
+      false
     end
+    true
   end
 
   def check_signal

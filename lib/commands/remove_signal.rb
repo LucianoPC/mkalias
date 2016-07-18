@@ -4,7 +4,7 @@ require 'commands/mka'
 require 'mkalias'
 
 # Command 'mkalias add_signal' implementation
-  class RemoveSignal < Command
+class RemoveSignal < Command
   def self.options_messages
     %(  remove_signal  $ mkalias remove_signal
   \t\t - Remove signal to run 'source ~/.bashrc' when

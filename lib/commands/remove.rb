@@ -20,7 +20,7 @@ class Remove < Command
   end
 
   def self.run(argv)
-    CommandHelper.check_run(argv)
+    CommandHelper.check_run(argv, parent)
 
     alias_names = ARGV[0..-1]
     removed_alias = Mkalias.remove_alias(alias_names)

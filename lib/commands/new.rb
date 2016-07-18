@@ -21,7 +21,7 @@ class New < Command
   end
 
   def self.run(argv)
-    CommandHelper.check_run(argv)
+    CommandHelper.check_run(argv, parent)
 
     alias_name = argv[0]
     commands = argv[1..-1]
